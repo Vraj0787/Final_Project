@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Global AI Layoffs and Job Market Pulse - Final Report</title>
+  <style>
+    body {
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.62;
+      color: #1a202c;
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 36px 30px 64px;
+      background: #ffffff;
+    }
+    h1, h2, h3, h4 { color: #102a43; }
+    h1 { font-size: 2.3rem; margin-bottom: 0.2rem; }
+    h2 {
+      margin-top: 2.25rem;
+      border-bottom: 1px solid #d9e2ec;
+      padding-bottom: 0.35rem;
+      font-size: 1.55rem;
+    }
+    h3 { margin-top: 1.35rem; font-size: 1.18rem; }
+    p, li { font-size: 1.02rem; }
+    .subtitle {
+      font-size: 1.18rem;
+      color: #486581;
+      margin-bottom: 0.9rem;
+    }
+    .meta, .abstract {
+      border: 1px solid #d9e2ec;
+      padding: 14px 16px;
+      margin: 18px 0;
+    }
+    .meta { background: #f7fafc; }
+    .abstract { background: #f8fbff; }
+    .figure {
+      margin: 24px 0 30px;
+      text-align: center;
+    }
+    .figure img {
+      max-width: 100%;
+      border: 1px solid #d9e2ec;
+      box-shadow: 0 6px 20px rgba(15, 23, 42, 0.08);
+    }
+    .caption {
+      color: #486581;
+      font-size: 0.95rem;
+      margin-top: 8px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 18px 0 24px;
+      font-size: 0.98rem;
+    }
+    th, td {
+      border: 1px solid #cbd2d9;
+      padding: 9px 10px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th { background: #f0f4f8; }
+    code {
+      background: #f0f4f8;
+      padding: 1px 4px;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Global AI Layoffs and Job Market Pulse</h1>
+  <div class="subtitle">Probability and Statistics Final Project Report</div>
+
+  <div class="meta">
+    <strong>Team</strong><br />
+    Team Member 1: Vraj Patel<br />
+    Team Member 2: Aaron Beck
+    <br /><br />
+    <strong>Contributions</strong><br />
+    Team Member 1: [Add contribution summary]<br />
+    Team Member 2: [Add contribution summary]
+  </div>
+
+  <div class="abstract">
+    <strong>Abstract.</strong> This project investigates the statistical structure of global layoff activity from 2020 to 2026 using the Kaggle dataset <em>Global AI Layoffs &amp; Job Market Pulse</em>, together with supporting labor-market and news-sentiment data. The main goal is to understand whether AI firms display different layoff behavior from non-AI firms, which industries and countries were most affected, whether funding raised is associated with layoff size, and how layoff activity relates to media sentiment and labor conditions. The report applies descriptive statistics, grouped comparisons, confidence intervals, hypothesis tests, nonparametric tests, effect sizes, correlation analysis, and regression models. The strongest findings are that layoff activity is concentrated in waves over time, that industries differ substantially in layoff distributions, that funding raised is positively associated with layoff size, and that layoff-focused news coverage is significantly more negative than other labor-market coverage.
+  </div>
+
+  <h2>1. Introduction</h2>
+  <p>
+    The global job market has experienced major instability since 2020. Economic shocks, post-pandemic restructuring, interest-rate changes, shifts in investor expectations, and the rapid expansion of artificial intelligence have all contributed to changes in hiring and layoffs. Public attention has focused especially on layoffs in technology and AI-adjacent firms, where large cuts often occur alongside narratives about automation, strategic realignment, and pressure to reduce costs while maintaining growth.
+  </p>
+  <p>
+    This topic is especially suitable for a probability and statistics project because it combines several features of real-world data analysis: a large and varied dataset, substantial cleaning requirements, highly skewed distributions, and enough structure to support both descriptive and inferential work.
+  </p>
+
+  <h2>2. Motivation and Project Objectives</h2>
+  <p>The project has four broad objectives:</p>
+  <ol>
+    <li>To summarize the scale and distribution of global layoff activity from 2020 to 2026.</li>
+    <li>To compare AI and non-AI firms and test whether they exhibit different statistical behavior.</li>
+    <li>To identify structural factors associated with layoffs, especially industry and funding.</li>
+    <li>To place layoffs into a wider context using sentiment and labor-market indicators.</li>
+  </ol>
+
+  <h2>3. Research Questions</h2>
+  <ol>
+    <li>How did layoff activity evolve from 2020 to 2026, and how much of it came from AI companies?</li>
+    <li>Do AI companies differ from non-AI companies in layoff size, workforce share affected, and funding profile?</li>
+    <li>Which industries, countries, and company stages contributed the most recorded layoffs?</li>
+    <li>Is funding associated with larger layoffs after accounting for the strong right-skew in layoff counts?</li>
+    <li>How does layoff-focused news sentiment behave over time, and is it systematically different from non-layoff coverage?</li>
+    <li>How do monthly layoff totals align with U.S. labor indicators such as unemployment, job openings, and jobless claims?</li>
+    <li>Across countries, how are layoff totals related to unemployment, youth unemployment, and employment-to-population ratios?</li>
+  </ol>
+
+  <h2>4. Dataset Description</h2>
+  <p>The project uses four datasets from the same Kaggle bundle.</p>
+  <ul>
+    <li><strong>layoffs_events.csv</strong>: 2,470 company-level layoff events from 2020-03-13 to 2026-04-16 across 61 countries, 31 industries, and 16 company stages.</li>
+    <li><strong>news_sentiment.csv</strong>: 306 labor and layoff-related headlines with sentiment scores and labels.</li>
+    <li><strong>us_labor_indicators.csv</strong>: 392 U.S. labor observations including unemployment, job openings, and claims.</li>
+    <li><strong>global_labor_indicators.csv</strong>: 114 country-year observations across 19 countries with unemployment, youth unemployment, and employment-to-population ratios.</li>
+  </ul>
+  <p>
+    The primary analytical focus is the layoff events file, while the news and labor datasets provide context that helps the project go beyond a basic event summary.
+  </p>
+
+  <h2>5. Data Cleaning and Preparation</h2>
+  <h3>5.1 Layoff Dataset Cleaning</h3>
+  <ul>
+    <li>Parsed <code>date</code> into datetime format.</li>
+    <li>Converted <code>pct_workforce</code> from strings such as <code>75%</code> into numeric percentages.</li>
+    <li>Converted <code>raised_mm</code> from strings such as <code>$45.00</code> into numeric values in millions of USD.</li>
+    <li>Standardized truncated text labels for countries and industries.</li>
+    <li>Created derived fields for month, year, and log-transformed variables.</li>
+  </ul>
+
+  <h3>5.2 Missing Data</h3>
+  <ul>
+    <li><code>layoff_count</code>: 878 missing values</li>
+    <li><code>pct_workforce</code>: 936 missing values</li>
+    <li><code>raised_mm</code>: 291 missing values</li>
+  </ul>
+  <p>
+    Instead of dropping the full dataset, each analysis used the largest valid subset relevant to its variables. This preserved information while keeping each test statistically appropriate.
+  </p>
+
+  <h3>5.3 Why Log Transformations Were Used</h3>
+  <p>
+    Layoff counts and funding raised are strongly right-skewed. A small number of very large events can dominate raw means and compress raw scatterplots. To improve interpretation, the report uses <code>log(1 + layoff_count)</code> and <code>log(1 + raised_mm)</code> in selected plots and reports both parametric and nonparametric results.
+  </p>
+
+  <h2>6. Statistical Methodology</h2>
+  <ul>
+    <li>Descriptive statistics: means, medians, standard deviations, counts, and grouped summaries</li>
+    <li>Welch two-sample t-tests for unequal-variance mean comparisons</li>
+    <li>Mann-Whitney U tests as nonparametric robustness checks</li>
+    <li>Bootstrap confidence intervals for mean differences</li>
+    <li>Cohen's d for effect-size interpretation</li>
+    <li>Kruskal-Wallis tests for comparing industry-level layoff distributions</li>
+    <li>Chi-square tests for categorical concentration</li>
+    <li>Spearman correlations for monotonic association under skewed data</li>
+    <li>Log-log and multiple regression models for structured relationship analysis</li>
+  </ul>
+  <p>
+    These methods were chosen because the layoff data are not normally distributed and contain extreme values. Reporting multiple methods improves the credibility of the results.
+  </p>
+
+  <h2>7. Descriptive Overview of Layoff Activity</h2>
+  <p>
+    The primary layoff dataset contains <strong>2,470 events</strong> spanning from <strong>March 13, 2020</strong> to <strong>April 16, 2026</strong>. It covers <strong>61 countries</strong>, <strong>31 industries</strong>, and <strong>16 company stages</strong>. AI companies represent <strong>14.37%</strong> of the observations.
+  </p>
+
+  <div class="figure">
+    <img src="../outputs/figures/layoffs_distribution_histogram.png" alt="Distribution of layoff counts" />
+    <div class="caption">Figure 1. Distribution of recorded layoff counts.</div>
+  </div>
+
+  <p>
+    The histogram shows a strongly skewed distribution, with many small and medium-sized events and a long right tail of extremely large layoff counts.
+  </p>
+
+  <table>
+    <thead>
+      <tr><th>Industry</th><th>Events</th><th>Total Layoffs</th><th>Mean Layoff</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Other</td><td>165</td><td>86,943</td><td>835.99</td></tr>
+      <tr><td>Retail</td><td>216</td><td>79,301</td><td>550.70</td></tr>
+      <tr><td>Hardware</td><td>49</td><td>54,784</td><td>1,611.29</td></tr>
+      <tr><td>Consumer</td><td>163</td><td>49,811</td><td>478.95</td></tr>
+      <tr><td>Transportation</td><td>157</td><td>42,157</td><td>405.36</td></tr>
+      <tr><td>Food</td><td>162</td><td>37,765</td><td>385.36</td></tr>
+    </tbody>
+  </table>
+
+  <p>
+    The top countries by total layoffs are led by the United States, followed by India, Germany, the Netherlands, the United Kingdom, and Sweden. This indicates strong geographic concentration rather than a uniform international spread.
+  </p>
+
+  <h2>8. Time Trend Analysis</h2>
+  <div class="figure">
+    <img src="../outputs/figures/layoffs_monthly_trend_ai_vs_non_ai.png" alt="Monthly layoffs by company type" />
+    <div class="caption">Figure 2. Monthly recorded layoffs for AI and non-AI companies.</div>
+  </div>
+  <p>
+    Layoff activity occurred in waves rather than at a constant rate. Early disruption is visible during the pandemic period, while later waves reflect restructuring across technology and related sectors. Non-AI companies account for most of the total layoffs, but AI-company layoffs remain visible throughout the period and become more noticeable later in the series.
+  </p>
+  <p>
+    This matters because it shows that AI layoffs should be interpreted as part of a broader restructuring environment rather than a fully isolated labor-market phenomenon.
+  </p>
+
+  <h2>9. AI vs Non-AI Company Comparison</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Company Type</th>
+        <th>Layoff Count Mean</th>
+        <th>Layoff Count Median</th>
+        <th>Workforce % Mean</th>
+        <th>Workforce % Median</th>
+        <th>Funding Mean ($M)</th>
+        <th>Funding Median ($M)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Non-AI</td><td>285.28</td><td>90.0</td><td>30.62</td><td>19.0</td><td>975.05</td><td>179.0</td></tr>
+      <tr><td>AI</td><td>686.77</td><td>77.0</td><td>26.14</td><td>18.0</td><td>901.43</td><td>125.0</td></tr>
+    </tbody>
+  </table>
+
+  <div class="figure">
+    <img src="../outputs/figures/layoffs_ai_vs_non_ai_boxplot.png" alt="AI vs non-AI layoff count boxplot" />
+    <div class="caption">Figure 3. Log-scaled layoff counts for AI and non-AI companies.</div>
+  </div>
+
+  <p><strong>Layoff count results:</strong></p>
+  <ul>
+    <li>Welch t-test: <strong>p = 0.024651</strong></li>
+    <li>Mann-Whitney U: <strong>p = 0.074364</strong></li>
+    <li>Bootstrap mean difference (AI - non-AI): <strong>397.64</strong> layoffs, 95% CI <strong>[84.42, 769.51]</strong></li>
+    <li>Cohen's d: <strong>0.289</strong></li>
+  </ul>
+
+  <p><strong>Workforce percentage results:</strong></p>
+  <ul>
+    <li>Welch t-test: <strong>p = 0.031597</strong></li>
+    <li>Mann-Whitney U: <strong>p = 0.247812</strong></li>
+    <li>Cohen's d: <strong>-0.147</strong></li>
+  </ul>
+
+  <p>
+    AI firms show a higher mean layoff count but a lower median layoff count than non-AI firms. This indicates that a relatively small number of very large AI-company layoffs strongly influence the mean. The disagreement between the parametric and nonparametric tests makes the interpretation more cautious: the groups differ in average behavior, but the difference is driven partly by skew and large events rather than by a clean shift across the entire distribution.
+  </p>
+
+  <h2>10. Industry and Country Comparisons</h2>
+  <div class="figure">
+    <img src="../outputs/figures/layoffs_top_industries.png" alt="Top industries by total layoffs" />
+    <div class="caption">Figure 4. Top industries by total recorded layoffs.</div>
+  </div>
+  <p>
+    Industry differences are one of the strongest findings in the report. The Kruskal-Wallis test across the leading industries gives <strong>p &lt; 0.000001</strong>, which provides strong evidence that layoff-count distributions differ by sector.
+  </p>
+  <p>
+    The results suggest that industry structure matters more than a simple “all companies behave similarly” explanation. Hardware, retail, consumer, transportation, and food all contribute heavily, but they do so with different combinations of event frequency and average layoff size.
+  </p>
+  <p>
+    Country comparisons show a similar issue: the United States dominates total counts, but some countries with fewer events show much larger average event size. This is why both totals and averages are necessary.
+  </p>
+
+  <h2>11. Funding and Layoff Size</h2>
+  <div class="figure">
+    <img src="../outputs/figures/layoffs_funding_vs_size.png" alt="Funding vs layoff count" />
+    <div class="caption">Figure 5. Funding raised versus layoff count on log-transformed axes.</div>
+  </div>
+  <p>
+    Funding raised is positively associated with layoff count. The Spearman correlation is <strong>rho = 0.435724</strong> with <strong>p &lt; 0.000001</strong>. This is one of the most statistically robust relationship findings in the project.
+  </p>
+  <p>
+    The most reasonable interpretation is not that funding directly causes layoffs, but that larger, better-funded, and more mature firms tend to employ more workers and therefore have the capacity for larger recorded layoff events.
+  </p>
+
+  <h2>12. News Sentiment Analysis</h2>
+  <p>
+    The news dataset contains <strong>306 articles</strong>, of which <strong>43.46%</strong> are labeled as layoff-related and <strong>7.84%</strong> as hiring-related.
+  </p>
+  <div class="figure">
+    <img src="../outputs/figures/news_average_sentiment_by_type.png" alt="Average sentiment by news type" />
+    <div class="caption">Figure 6. Average sentiment for layoff, non-layoff, and hiring news.</div>
+  </div>
+  <ul>
+    <li>Welch t-test: <strong>p = 0.000015</strong></li>
+    <li>Mann-Whitney U test: <strong>p = 0.000027</strong></li>
+    <li>Cohen's d: <strong>-0.494</strong></li>
+    <li>Layoff-news sentiment 95% CI: <strong>[-0.2665, -0.1113]</strong></li>
+    <li>Non-layoff-news sentiment 95% CI: <strong>[-0.0196, 0.1451]</strong></li>
+  </ul>
+  <p>
+    This is a strong supporting result. Layoff-focused coverage is significantly more negative than other labor-market coverage, and the effect size is moderate rather than trivial. This section helps the project stand out because it connects quantitative layoffs to the surrounding information environment.
+  </p>
+
+  <h2>13. U.S. Labor Indicator Analysis</h2>
+  <div class="figure">
+    <img src="../outputs/figures/us_labor_vs_layoffs_timeseries.png" alt="Layoffs and U.S. labor conditions" />
+    <div class="caption">Figure 7. Standardized comparison of layoffs and U.S. labor indicators over time.</div>
+  </div>
+  <div class="figure">
+    <img src="../outputs/figures/us_unemployment_vs_global_layoffs.png" alt="Global layoffs vs U.S. unemployment" />
+    <div class="caption">Figure 8. Global recorded layoffs versus U.S. unemployment rate.</div>
+  </div>
+  <ul>
+    <li>Layoffs vs unemployment: <strong>rho = -0.350847</strong>, <strong>p = 0.001888</strong></li>
+    <li>Layoffs vs jobless claims: <strong>rho = -0.393920</strong>, <strong>p = 0.000430</strong></li>
+    <li>Layoffs vs openings per unemployed: <strong>rho = 0.147623</strong>, <strong>p = 0.203157</strong></li>
+    <li>Multiple-regression R²: <strong>0.05833</strong></li>
+  </ul>
+  <p>
+    These findings show that broad labor-market context matters, but the relationship is not simple. Global layoffs do not map neatly onto U.S.-specific labor indicators, likely because of timing differences, aggregation mismatch, and the fact that the layoffs are international while the labor indicators are national.
+  </p>
+
+  <h2>14. Global Labor Indicator Analysis</h2>
+  <div class="figure">
+    <img src="../outputs/figures/global_unemployment_vs_layoffs.png" alt="Country-year layoffs vs unemployment" />
+    <div class="caption">Figure 9. Country-year layoff totals versus unemployment rate.</div>
+  </div>
+  <ul>
+    <li>Layoffs vs unemployment: <strong>rho = -0.010208</strong>, <strong>p = 0.914156</strong></li>
+    <li>Layoffs vs youth unemployment: <strong>rho = 0.007956</strong>, <strong>p = 0.933047</strong></li>
+    <li>Layoffs vs employment-to-population ratio: <strong>rho = -0.049342</strong>, <strong>p = 0.602127</strong></li>
+    <li>Multiple-regression R²: <strong>0.034868</strong></li>
+  </ul>
+  <p>
+    These relationships are weak and statistically insignificant. This is an important result because it suggests that annual country-level labor indicators alone are not sufficient to explain where layoffs are concentrated. Layoffs appear to depend more strongly on sector composition, firm scale, and startup or technology ecosystem characteristics.
+  </p>
+
+  <h2>15. Integrated Discussion</h2>
+  <ol>
+    <li><strong>Layoffs were wave-like rather than constant.</strong> The time trend clearly shows clustering over particular periods.</li>
+    <li><strong>AI firms differ from non-AI firms, but the difference is not simple.</strong> The mean difference is influenced strongly by skew and outliers.</li>
+    <li><strong>Industry and funding are stronger explanatory signals than broad labor averages.</strong></li>
+    <li><strong>Sentiment adds a useful supporting dimension.</strong> Layoff coverage is materially more negative than general labor coverage.</li>
+    <li><strong>Macro indicators matter, but not in a one-to-one way.</strong> Both U.S. and global labor analyses add context even where relationships are weak.</li>
+  </ol>
+
+  <h2>16. Limitations</h2>
+  <ul>
+    <li>Missing values remain in several key layoff variables.</li>
+    <li>The layoff dataset is event-based rather than employee-level.</li>
+    <li>Extremely large layoff events create strong skew and can influence averages heavily.</li>
+    <li>Different supporting datasets use different units of observation and time aggregation.</li>
+    <li>The results show association, not causation.</li>
+  </ul>
+
+  <h2>17. Conclusion</h2>
+  <p>
+    This project used a multi-source layoff and labor-market dataset to analyze global AI layoffs and the broader economic context surrounding them. The strongest findings concern time trends, industry differences, the positive association between funding and layoff size, and the significantly negative sentiment of layoff-focused news coverage.
+  </p>
+  <p>
+    By contrast, broad annual labor indicators were weak predictors of cross-country layoff totals, suggesting that layoffs are explained more effectively by firm-level and industry-level mechanisms than by national averages alone. Overall, the project demonstrates how probability and statistics can be applied to a real-world economic problem through cleaning, visualization, grouped comparison, hypothesis testing, confidence intervals, effect sizes, and regression-based interpretation.
+  </p>
+
+  <h2>18. Key Parameters</h2>
+  <table>
+    <thead>
+      <tr><th>Parameter</th><th>Value</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Primary layoff events</td><td>2,470</td></tr>
+      <tr><td>Countries covered in layoffs data</td><td>61</td></tr>
+      <tr><td>Industries covered</td><td>31</td></tr>
+      <tr><td>Company stages covered</td><td>16</td></tr>
+      <tr><td>AI-company share</td><td>14.37%</td></tr>
+      <tr><td>News articles</td><td>306</td></tr>
+      <tr><td>U.S. labor observations</td><td>392</td></tr>
+      <tr><td>Global labor observations</td><td>114</td></tr>
+      <tr><td>Main time span</td><td>2020-03-13 to 2026-04-16</td></tr>
+    </tbody>
+  </table>
+
+  <h2>19. References</h2>
+  <ol>
+    <li>Kaggle. <em>Global AI Layoffs &amp; Job Market (2020–Present).</em></li>
+    <li>Dataset package README included in this project: <code>archive/README.md</code></li>
+    <li>Layoffs.fyi historical layoff event source, as documented in the dataset README</li>
+    <li>FRED (Federal Reserve Economic Data), as documented in the dataset README</li>
+    <li>World Bank labor indicators, as documented in the dataset README</li>
+    <li>NewsAPI headline archive, as documented in the dataset README</li>
+  </ol>
+
+  <h2>Appendix A. Summary of Figures Used in the Report</h2>
+  <ol>
+    <li>Distribution of Recorded Layoff Counts</li>
+    <li>Monthly Layoffs by Company Type</li>
+    <li>AI vs Non-AI Layoff Count Boxplot</li>
+    <li>Top Industries by Total Layoffs</li>
+    <li>Funding Raised vs Layoff Count</li>
+    <li>Average Sentiment by News Type</li>
+    <li>Layoffs and U.S. Labor Conditions</li>
+    <li>Global Layoffs vs U.S. Unemployment Rate</li>
+    <li>Country-Year Layoffs vs Unemployment Rate</li>
+  </ol>
+</body>
+</html>

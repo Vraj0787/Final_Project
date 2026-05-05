@@ -1,0 +1,2 @@
+global_layoffs_vs_unemployment_rho,global_layoffs_vs_unemployment_p,global_layoffs_vs_claims_rho,global_layoffs_vs_claims_p,global_layoffs_vs_openings_rho,global_layoffs_vs_openings_p,n_obs,intercept,beta_unemployment_rate,beta_initial_jobless_claims_k,beta_openings_per_unemployed,r_squared,rank,sse
+-0.350847,0.001888,-0.39392,0.00043,0.147623,0.203157,76,5829.249085,-1217.381785,0.00536,2.381641,0.05833,4,6975606938.368442

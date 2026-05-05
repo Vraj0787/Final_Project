@@ -1,0 +1,7 @@
+1. How did layoff activity evolve from 2020 to 2026, and how much of it came from AI companies?
+2. Do AI companies differ from non-AI companies in layoff size, workforce share affected, and funding profile?
+3. Which industries, countries, and company stages contributed the most recorded layoffs?
+4. Is funding associated with larger layoffs after accounting for the strong right-skew in layoff counts?
+5. How does layoff-focused news sentiment behave over time, and is it systematically different from non-layoff coverage?
+6. How do monthly layoff totals align with U.S. labor indicators such as unemployment, job openings, and jobless claims?
+7. Across countries, how are layoff totals related to unemployment, youth unemployment, and employment-to-population ratios?

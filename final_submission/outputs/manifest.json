@@ -1,0 +1,14 @@
+{
+  "main_script": "final_project_analysis.py",
+  "primary_dataset": "layoffs_events.csv",
+  "supporting_datasets": [
+    "news_sentiment.csv",
+    "us_labor_indicators.csv",
+    "global_labor_indicators.csv"
+  ],
+  "outputs_root": "submission_outputs",
+  "figures_dir": "figures",
+  "tables_dir": "tables",
+  "cleaned_data_dir": "cleaned_data",
+  "notes_dir": "notes"
+}

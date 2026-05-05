@@ -1,0 +1,7 @@
+sentiment_cat,is_layoff_news,article_count,mean_sentiment
+negative,False,64,-0.5338
+negative,True,86,-0.463
+neutral,False,23,0.0019
+neutral,True,14,0.0044
+positive,False,86,0.523
+positive,True,33,0.4433

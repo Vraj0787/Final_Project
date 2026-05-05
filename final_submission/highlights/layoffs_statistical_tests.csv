@@ -1,0 +1,2 @@
+layoff_count_welch_ttest_p,layoff_count_mannwhitney_p,layoff_count_cohens_d,layoff_count_bootstrap_diff_mean,layoff_count_bootstrap_diff_ci_low,layoff_count_bootstrap_diff_ci_high,pct_workforce_welch_ttest_p,pct_workforce_mannwhitney_p,pct_workforce_cohens_d,industry_kruskal_p,funding_spearman_rho,funding_spearman_p
+0.024651,0.074364,0.288629,397.637358,84.419188,769.513322,0.031597,0.247812,-0.146707,0.0,0.435724,0.0

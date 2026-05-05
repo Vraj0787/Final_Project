@@ -1,0 +1,2 @@
+layoff_vs_nonlayoff_welch_p,layoff_vs_nonlayoff_mannwhitney_p,layoff_vs_nonlayoff_cohens_d,layoff_sentiment_ci_low,layoff_sentiment_ci_high,nonlayoff_sentiment_ci_low,nonlayoff_sentiment_ci_high
+1.5e-05,2.7e-05,-0.494152,-0.26654,-0.111335,-0.019644,0.145129
