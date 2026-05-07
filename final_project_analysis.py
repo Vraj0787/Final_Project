@@ -171,6 +171,7 @@ def scatter_with_trend(
     y_label: str,
     color: str,
 ) -> None:
+    # Visualization method: scatter plot with a fitted linear trend line for relationship analysis.
     plot_df = pd.DataFrame({"x": x, "y": y}).dropna()
     if plot_df.empty:
         return
@@ -245,6 +246,7 @@ def load_global_labor() -> pd.DataFrame:
 
 
 def save_data_quality(raw_layoffs: pd.DataFrame, layoffs: pd.DataFrame, news: pd.DataFrame, us_labor: pd.DataFrame, global_labor: pd.DataFrame) -> None:
+    # Data quality requirement: document missing values before and after cleaning for each dataset.
     frames = {
         "layoffs_events": (raw_layoffs, layoffs),
         "news_sentiment": (news, news),
@@ -267,6 +269,7 @@ def save_data_quality(raw_layoffs: pd.DataFrame, layoffs: pd.DataFrame, news: pd
 
 
 def analyze_layoffs(layoffs: pd.DataFrame) -> dict[str, object]:
+    # Descriptive statistics requirement: compare AI and non-AI companies across core layoff metrics.
     ai = layoffs[layoffs["is_ai_company"]]
     non_ai = layoffs[~layoffs["is_ai_company"]]
 
@@ -342,6 +345,7 @@ def analyze_layoffs(layoffs: pd.DataFrame) -> dict[str, object]:
     industry_groups = [industry_subset.loc[industry_subset["industry"] == name, "layoff_count"] for name in top_industry_names]
 
     funding_df = layoffs.dropna(subset=["raised_mm", "layoff_count", "log_raised_mm", "log_layoff_count"])
+    # Inferential methods requirement: hypothesis tests, effect size, bootstrap interval, and rank correlation.
     tests = {
         "layoff_count_welch_ttest_p": float(stats.ttest_ind(layoff_ai, layoff_non_ai, equal_var=False).pvalue),
         "layoff_count_mannwhitney_p": float(stats.mannwhitneyu(layoff_ai, layoff_non_ai, alternative="two-sided").pvalue),
@@ -365,6 +369,7 @@ def analyze_layoffs(layoffs: pd.DataFrame) -> dict[str, object]:
         [{"chi_square_statistic": round(float(chi2), 4), "p_value": round(float(p_value), 6)}]
     ).to_csv(TABLES_DIR / "layoffs_industry_ai_chi_square.csv", index=False)
 
+    # Graph requirement: time-series line chart for monthly layoffs by company type.
     plt.figure(figsize=(11, 6))
     monthly_pivot = monthly.pivot(index="month", columns="is_ai_company", values="total_layoffs").fillna(0)
     plt.plot(monthly_pivot.index, monthly_pivot.get(False, pd.Series(dtype=float)), label="Non-AI companies", linewidth=2.0)
@@ -377,6 +382,7 @@ def analyze_layoffs(layoffs: pd.DataFrame) -> dict[str, object]:
     plt.savefig(FIGURES_DIR / "layoffs_monthly_trend_ai_vs_non_ai.png", dpi=220)
     plt.close()
 
+    # Graph requirement: boxplot to compare the distribution of log-scaled layoff sizes.
     plt.figure(figsize=(8, 6))
     box_groups = [np.log1p(layoff_ai), np.log1p(layoff_non_ai)]
     plt.boxplot(box_groups, tick_labels=["AI", "Non-AI"], patch_artist=True)
@@ -386,6 +392,7 @@ def analyze_layoffs(layoffs: pd.DataFrame) -> dict[str, object]:
     plt.savefig(FIGURES_DIR / "layoffs_ai_vs_non_ai_boxplot.png", dpi=220)
     plt.close()
 
+    # Graph requirement: histogram to show the overall layoff-count distribution.
     plt.figure(figsize=(10, 6))
     plt.hist(np.log1p(layoffs["layoff_count"].dropna()), bins=30, color="#2b6cb0", alpha=0.85)
     plt.title("Distribution of Recorded Layoff Counts")
@@ -395,6 +402,7 @@ def analyze_layoffs(layoffs: pd.DataFrame) -> dict[str, object]:
     plt.savefig(FIGURES_DIR / "layoffs_distribution_histogram.png", dpi=220)
     plt.close()
 
+    # Graph requirement: bar chart for the industries with the highest recorded layoffs.
     plt.figure(figsize=(11, 6))
     plt.bar(top_industries["industry"], top_industries["total_layoffs"], color="#2b6cb0")
     plt.title("Top Industries by Total Recorded Layoffs")
@@ -405,6 +413,7 @@ def analyze_layoffs(layoffs: pd.DataFrame) -> dict[str, object]:
     plt.savefig(FIGURES_DIR / "layoffs_top_industries.png", dpi=220)
     plt.close()
 
+    # Graph requirement: bar chart for the countries with the highest recorded layoffs.
     plt.figure(figsize=(11, 6))
     plt.bar(top_countries["country"], top_countries["total_layoffs"], color="#dd6b20")
     plt.title("Top Countries by Total Recorded Layoffs")
@@ -415,6 +424,7 @@ def analyze_layoffs(layoffs: pd.DataFrame) -> dict[str, object]:
     plt.savefig(FIGURES_DIR / "layoffs_top_countries.png", dpi=220)
     plt.close()
 
+    # Graph requirement: scatter plot with regression line for funding versus layoff size.
     plt.figure(figsize=(9, 6))
     x = funding_df["log_raised_mm"]
     y = funding_df["log_layoff_count"]
@@ -440,6 +450,7 @@ def analyze_layoffs(layoffs: pd.DataFrame) -> dict[str, object]:
 
 
 def analyze_news(news: pd.DataFrame) -> dict[str, object]:
+    # Sentiment-analysis requirement: summarize how news tone differs across layoff and non-layoff coverage.
     summary = pd.DataFrame(
         [
             {"metric": "rows", "value": len(news)},
@@ -474,6 +485,7 @@ def analyze_news(news: pd.DataFrame) -> dict[str, object]:
 
     layoff_sentiment = news.loc[news["is_layoff_news"], "sentiment"]
     non_layoff_sentiment = news.loc[~news["is_layoff_news"], "sentiment"]
+    # Inferential methods requirement: compare layoff-news sentiment against other coverage.
     tests = {
         "layoff_vs_nonlayoff_welch_p": float(stats.ttest_ind(layoff_sentiment, non_layoff_sentiment, equal_var=False).pvalue),
         "layoff_vs_nonlayoff_mannwhitney_p": float(
@@ -487,6 +499,7 @@ def analyze_news(news: pd.DataFrame) -> dict[str, object]:
     }
     pd.DataFrame([tests]).round(6).to_csv(TABLES_DIR / "news_statistical_tests.csv", index=False)
 
+    # Graph requirement: time-series line chart for monthly average news sentiment.
     plt.figure(figsize=(11, 6))
     plt.plot(monthly["month"], monthly["mean_sentiment"], linewidth=2.0, color="#2f855a")
     plt.axhline(0, color="gray", linestyle="--", linewidth=1)
@@ -497,6 +510,7 @@ def analyze_news(news: pd.DataFrame) -> dict[str, object]:
     plt.savefig(FIGURES_DIR / "news_monthly_sentiment_trend.png", dpi=220)
     plt.close()
 
+    # Graph requirement: bar chart for counts in each sentiment category.
     plt.figure(figsize=(8, 6))
     cat_counts = news["sentiment_cat"].value_counts().reindex(["negative", "neutral", "positive"]).fillna(0)
     plt.bar(cat_counts.index, cat_counts.values, color=["#c53030", "#718096", "#2f855a"])
@@ -507,6 +521,7 @@ def analyze_news(news: pd.DataFrame) -> dict[str, object]:
     plt.savefig(FIGURES_DIR / "news_sentiment_category_counts.png", dpi=220)
     plt.close()
 
+    # Graph requirement: bar chart comparing average sentiment by news type.
     plt.figure(figsize=(8, 6))
     compare = pd.DataFrame(
         {
@@ -527,6 +542,7 @@ def analyze_news(news: pd.DataFrame) -> dict[str, object]:
 
 
 def analyze_us_labor(layoffs: pd.DataFrame, us_labor: pd.DataFrame) -> dict[str, object]:
+    # Data integration requirement: merge monthly layoffs with U.S. labor-market indicators.
     layoffs_monthly = (
         layoffs.groupby("month")
         .agg(global_total_layoffs=("layoff_count", "sum"), global_event_count=("company", "size"))
@@ -583,6 +599,7 @@ def analyze_us_labor(layoffs: pd.DataFrame, us_labor: pd.DataFrame) -> dict[str,
         "global_total_layoffs",
         ["unemployment_rate", "initial_jobless_claims_k", "openings_per_unemployed"],
     )
+    # Statistical methods requirement: Spearman correlations plus multivariable regression.
     tests = {
         "global_layoffs_vs_unemployment_rho": float(spearman_global.statistic),
         "global_layoffs_vs_unemployment_p": float(spearman_global.pvalue),
@@ -594,6 +611,7 @@ def analyze_us_labor(layoffs: pd.DataFrame, us_labor: pd.DataFrame) -> dict[str,
     }
     pd.DataFrame([tests]).round(6).to_csv(TABLES_DIR / "us_labor_statistical_tests.csv", index=False)
 
+    # Graph requirement: standardized time-series comparison across layoffs and labor indicators.
     plt.figure(figsize=(11, 6))
     z_df = merged[["month", "global_total_layoffs", "unemployment_rate", "openings_per_unemployed"]].copy()
     for column in ["global_total_layoffs", "unemployment_rate", "openings_per_unemployed"]:
@@ -623,6 +641,7 @@ def analyze_us_labor(layoffs: pd.DataFrame, us_labor: pd.DataFrame) -> dict[str,
 
 
 def analyze_global_labor(layoffs: pd.DataFrame, global_labor: pd.DataFrame) -> dict[str, object]:
+    # Data integration requirement: connect country-year layoffs to global labor indicators.
     annual_country = (
         layoffs.groupby(["country", "year"])
         .agg(total_layoffs=("layoff_count", "sum"), event_count=("company", "size"))
@@ -666,6 +685,7 @@ def analyze_global_labor(layoffs: pd.DataFrame, global_labor: pd.DataFrame) -> d
         "total_layoffs",
         ["unemployment_rate_pct", "youth_unemployment_pct", "employment_to_pop_pct"],
     )
+    # Statistical methods requirement: global correlation tests and multivariable regression.
     tests = {
         "layoffs_vs_unemployment_rho": float(rho_unemp.statistic),
         "layoffs_vs_unemployment_p": float(rho_unemp.pvalue),
