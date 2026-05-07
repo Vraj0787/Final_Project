@@ -4,12 +4,45 @@ import json
 import math
 import os
 from pathlib import Path
+import subprocess
+import webbrowser
 
 import numpy as np
 import pandas as pd
 
-PROJECT_ROOT = Path(__file__).resolve().parent
-OUTPUT_DIR = PROJECT_ROOT / "submission_outputs"
+SCRIPT_DIR = Path(__file__).resolve().parent
+
+
+def find_project_root(script_dir: Path) -> Path:
+    for candidate in [script_dir, *script_dir.parents]:
+        if (candidate / "archive").exists():
+            return candidate
+    return script_dir
+
+
+def find_data_path(project_root: Path, filename: str) -> Path:
+    candidates = [
+        SCRIPT_DIR / "archive" / filename,
+        SCRIPT_DIR.parent / "data" / filename,
+        project_root / "archive" / filename,
+        project_root / "final_submission" / "data" / filename,
+    ]
+    for candidate in candidates:
+        if candidate.exists():
+            return candidate
+    return candidates[0]
+
+
+PROJECT_ROOT = find_project_root(SCRIPT_DIR)
+
+
+def determine_output_dir(project_root: Path, script_dir: Path) -> Path:
+    if script_dir.name == "code" and script_dir.parent.name == "final_submission":
+        return script_dir.parent / "outputs"
+    return project_root / "final_submission" / "outputs"
+
+
+OUTPUT_DIR = determine_output_dir(PROJECT_ROOT, SCRIPT_DIR)
 FIGURES_DIR = OUTPUT_DIR / "figures"
 TABLES_DIR = OUTPUT_DIR / "tables"
 CLEANED_DIR = OUTPUT_DIR / "cleaned_data"
@@ -28,10 +61,10 @@ import matplotlib.pyplot as plt
 from scipy import stats
 
 
-LAYOFFS_PATH = PROJECT_ROOT / "archive" / "layoffs_events.csv"
-NEWS_PATH = PROJECT_ROOT / "archive" / "news_sentiment.csv"
-US_LABOR_PATH = PROJECT_ROOT / "archive" / "us_labor_indicators.csv"
-GLOBAL_LABOR_PATH = PROJECT_ROOT / "archive" / "global_labor_indicators.csv"
+LAYOFFS_PATH = find_data_path(PROJECT_ROOT, "layoffs_events.csv")
+NEWS_PATH = find_data_path(PROJECT_ROOT, "news_sentiment.csv")
+US_LABOR_PATH = find_data_path(PROJECT_ROOT, "us_labor_indicators.csv")
+GLOBAL_LABOR_PATH = find_data_path(PROJECT_ROOT, "global_labor_indicators.csv")
 
 RESEARCH_QUESTIONS = [
     "How did layoff activity evolve from 2020 to 2026, and how much of it came from AI companies?",
@@ -752,7 +785,7 @@ def write_methods_summary() -> None:
         "- Converted `pct_workforce` from percentage strings into numeric percentages.",
         "- Converted `raised_mm` from currency-formatted strings into numeric millions of USD.",
         "- Standardized truncated country and industry names where needed.",
-        "- Exported cleaned versions of every dataset to `submission_outputs/cleaned_data/`.",
+        "- Exported cleaned versions of every dataset to `final_submission/outputs/cleaned_data/`.",
         "",
         "## Descriptive Analysis",
         "- Overall dataset summaries.",
@@ -905,6 +938,98 @@ def write_manifest() -> None:
         json.dump(manifest, handle, indent=2)
 
 
+def write_run_gallery() -> Path:
+    figure_files = sorted(FIGURES_DIR.glob("*.png"))
+    table_files = sorted(TABLES_DIR.glob("*.csv"))
+    note_files = sorted(TEXT_DIR.iterdir()) if TEXT_DIR.exists() else []
+    gallery_path = OUTPUT_DIR / "run_gallery.html"
+    figure_cards = "\n".join(
+        [
+            (
+                f"<section class='card'><h2>{figure.name}</h2>"
+                f"<img src='figures/{figure.name}' alt='{figure.stem}' />"
+                f"<p><a href='figures/{figure.name}'>Open image</a></p></section>"
+            )
+            for figure in figure_files
+        ]
+    )
+    table_links = "\n".join([f"<li><a href='tables/{table.name}'>{table.name}</a></li>" for table in table_files])
+    note_links = "\n".join([f"<li><a href='notes/{note.name}'>{note.name}</a></li>" for note in note_files if note.is_file()])
+    gallery_path.write_text(
+        "\n".join(
+            [
+                "<!DOCTYPE html>",
+                "<html lang='en'>",
+                "<head>",
+                "<meta charset='utf-8' />",
+                "<meta name='viewport' content='width=device-width, initial-scale=1' />",
+                "<title>Final Project Output Gallery</title>",
+                "<style>",
+                "body { font-family: Helvetica, Arial, sans-serif; margin: 0; background: #f7fafc; color: #1a202c; }",
+                "header { padding: 24px 32px 8px; }",
+                "main { padding: 0 32px 32px; }",
+                ".grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }",
+                ".card { background: white; border-radius: 14px; padding: 16px; box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08); }",
+                "img { width: 100%; height: auto; border-radius: 10px; background: #edf2f7; }",
+                "ul { background: white; border-radius: 14px; padding: 18px 24px; box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08); }",
+                "a { color: #2b6cb0; text-decoration: none; }",
+                "</style>",
+                "</head>",
+                "<body>",
+                "<header>",
+                "<h1>Final Project Output Gallery</h1>",
+                f"<p>Outputs saved in: {OUTPUT_DIR}</p>",
+                "</header>",
+                "<main>",
+                "<h2>Figures</h2>",
+                f"<div class='grid'>{figure_cards}</div>",
+                "<h2>Tables</h2>",
+                f"<ul>{table_links}</ul>",
+                "<h2>Notes</h2>",
+                f"<ul>{note_links}</ul>",
+                "</main>",
+                "</body>",
+                "</html>",
+            ]
+        ),
+        encoding="utf-8",
+    )
+    return gallery_path
+
+
+def open_run_gallery(gallery_path: Path) -> None:
+    if os.environ.get("FINAL_PROJECT_OPEN_OUTPUTS", "1") == "0":
+        return
+    try:
+        if os.uname().sysname == "Darwin":
+            for browser_name in ["Safari", "Google Chrome"]:
+                result = subprocess.run(
+                    ["open", "-a", browser_name, str(gallery_path)],
+                    check=False,
+                    capture_output=True,
+                    text=True,
+                )
+                if result.returncode == 0:
+                    return
+            subprocess.run(
+                ["open", str(FIGURES_DIR)],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+        else:
+            webbrowser.open(gallery_path.as_uri())
+    except OSError:
+        pass
+
+
+def print_output_summary(gallery_path: Path) -> None:
+    print(f"Submission-ready outputs saved in {OUTPUT_DIR}")
+    print(f"Run gallery available at {gallery_path}")
+    for figure_path in sorted(FIGURES_DIR.glob("*.png")):
+        print(f"Figure: {figure_path}")
+
+
 def build_final_submission_folder() -> None:
     submission_dir = PROJECT_ROOT / "final_submission"
     submission_code = submission_dir / "code"
@@ -930,16 +1055,17 @@ def build_final_submission_folder() -> None:
     for src, dst in files_to_copy.items():
         dst.write_bytes(src.read_bytes())
 
-    for subfolder in ["cleaned_data", "figures", "tables", "notes"]:
-        source_dir = OUTPUT_DIR / subfolder
-        target_dir = submission_outputs / subfolder
-        target_dir.mkdir(exist_ok=True)
-        for item in source_dir.iterdir():
-            if item.is_file():
-                (target_dir / item.name).write_bytes(item.read_bytes())
+    if OUTPUT_DIR != submission_outputs:
+        for subfolder in ["cleaned_data", "figures", "tables", "notes"]:
+            source_dir = OUTPUT_DIR / subfolder
+            target_dir = submission_outputs / subfolder
+            target_dir.mkdir(exist_ok=True)
+            for item in source_dir.iterdir():
+                if item.is_file():
+                    (target_dir / item.name).write_bytes(item.read_bytes())
 
-    manifest_target = submission_outputs / "manifest.json"
-    manifest_target.write_bytes((OUTPUT_DIR / "manifest.json").read_bytes())
+        manifest_target = submission_outputs / "manifest.json"
+        manifest_target.write_bytes((OUTPUT_DIR / "manifest.json").read_bytes())
 
     highlight_items = [
         OUTPUT_DIR / "figures" / "layoffs_monthly_trend_ai_vs_non_ai.png",
@@ -1004,7 +1130,9 @@ def main() -> None:
     write_professor_facing_shortlist()
     write_manifest()
     build_final_submission_folder()
-    print(f"Submission-ready outputs saved in {OUTPUT_DIR}")
+    gallery_path = write_run_gallery()
+    open_run_gallery(gallery_path)
+    print_output_summary(gallery_path)
 
 
 if __name__ == "__main__":

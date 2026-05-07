@@ -1,0 +1,2 @@
+layoffs_vs_unemployment_rho,layoffs_vs_unemployment_p,layoffs_vs_youth_unemployment_rho,layoffs_vs_youth_unemployment_p,layoffs_vs_employment_to_pop_rho,layoffs_vs_employment_to_pop_p,n_obs,intercept,beta_unemployment_rate_pct,beta_youth_unemployment_pct,beta_employment_to_pop_pct,r_squared,rank,sse
+-0.010208,0.914156,0.007956,0.933047,-0.049342,0.602127,114,36016.142152,317.009694,-490.293951,-449.972254,0.034868,4,21305377867.116627

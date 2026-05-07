@@ -1,0 +1,6 @@
+,total_layoffs,event_count,unemployment_rate_pct,youth_unemployment_pct,employment_to_pop_pct
+total_layoffs,1.0,0.8979,-0.0825,-0.0923,-0.0252
+event_count,0.8979,1.0,-0.0755,-0.0903,-0.0276
+unemployment_rate_pct,-0.0825,-0.0755,1.0,0.971,-0.7587
+youth_unemployment_pct,-0.0923,-0.0903,0.971,1.0,-0.7865
+employment_to_pop_pct,-0.0252,-0.0276,-0.7587,-0.7865,1.0

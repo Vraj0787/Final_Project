@@ -1,0 +1,115 @@
+year,country_code,country_name,unemployment_rate_pct,youth_unemployment_pct,employment_to_pop_pct,country,total_layoffs,event_count
+2020,AU,Australia,6.394,14.142,60.87,Australia,66.0,3.0
+2021,AU,Australia,5.022,11.134,62.825,,0.0,0.0
+2022,AU,Australia,3.728,8.468,64.396,Australia,606.0,20.0
+2023,AU,Australia,3.668,8.388,64.565,Australia,354.0,17.0
+2024,AU,Australia,3.942,9.408,64.089,Australia,60.0,1.0
+2025,AU,Australia,4.09,9.61,63.816,Australia,210.0,3.0
+2020,BR,Brazil,13.697,30.267,52.195,Brazil,1052.0,12.0
+2021,BR,Brazil,13.158,28.311,54.238,,0.0,0.0
+2022,BR,Brazil,9.231,20.732,57.663,Brazil,2520.0,21.0
+2023,BR,Brazil,7.947,17.938,57.915,Brazil,1075.0,13.0
+2024,BR,Brazil,6.801,15.674,59.031,,0.0,0.0
+2025,BR,Brazil,5.97,13.981,59.37,,0.0,0.0
+2020,CA,Canada,9.657,20.125,57.907,Canada,690.0,18.0
+2021,CA,Canada,7.527,13.557,60.288,,0.0,0.0
+2022,CA,Canada,5.279,10.082,61.802,Canada,2400.0,34.0
+2023,CA,Canada,5.415,10.806,61.822,Canada,1333.0,27.0
+2024,CA,Canada,6.351,13.276,60.627,Canada,1371.0,11.0
+2025,CA,Canada,6.907,13.8,60.061,Canada,223.0,6.0
+2020,CN,China,5.0,12.65,62.435,China,0.0,2.0
+2021,CN,China,4.55,12.404,64.056,,0.0,0.0
+2022,CN,China,4.98,14.673,62.523,China,630.0,9.0
+2023,CN,China,4.67,15.562,62.756,China,2485.0,9.0
+2024,CN,China,4.59,15.044,61.931,China,1000.0,2.0
+2025,CN,China,4.615,15.795,61.572,,0.0,0.0
+2020,DE,Germany,3.881,7.862,58.131,Germany,280.0,5.0
+2021,DE,Germany,3.594,6.665,58.224,Germany,300.0,1.0
+2022,DE,Germany,3.137,6.049,58.926,Germany,2242.0,32.0
+2023,DE,Germany,3.071,6.02,59.175,Germany,13029.0,34.0
+2024,DE,Germany,3.4,6.604,58.849,Germany,9924.0,11.0
+2025,DE,Germany,3.711,6.862,58.323,Germany,365.0,5.0
+2020,FR,France,8.009,20.398,49.925,France,0.0,1.0
+2021,FR,France,7.871,19.252,51.179,,0.0,0.0
+2022,FR,France,7.303,17.856,51.758,France,157.0,2.0
+2023,FR,France,7.335,17.419,51.835,France,978.0,9.0
+2024,FR,France,7.4,18.603,51.544,France,203.0,5.0
+2025,FR,France,7.542,18.89,51.172,,0.0,0.0
+2020,GB,United Kingdom,4.472,13.365,59.775,United Kingdom,1405.0,10.0
+2021,GB,United Kingdom,4.864,12.891,58.959,United Kingdom,20.0,1.0
+2022,GB,United Kingdom,3.768,10.589,59.573,United Kingdom,821.0,29.0
+2023,GB,United Kingdom,4.025,11.944,59.323,United Kingdom,8836.0,37.0
+2024,GB,United Kingdom,4.361,14.316,58.871,United Kingdom,5461.0,10.0
+2025,GB,United Kingdom,4.746,14.647,58.457,United Kingdom,40.0,5.0
+2020,ID,Indonesia,4.255,14.773,64.533,Indonesia,780.0,7.0
+2021,ID,Indonesia,3.827,13.8,63.348,,0.0,0.0
+2022,ID,Indonesia,3.462,14.054,64.698,Indonesia,761.0,8.0
+2023,ID,Indonesia,3.308,13.015,65.653,Indonesia,140.0,6.0
+2024,ID,Indonesia,3.301,13.075,65.685,Indonesia,0.0,1.0
+2025,ID,Indonesia,3.237,12.977,65.765,,0.0,0.0
+2020,IL,Israel,4.169,7.645,60.763,Israel,80.0,4.0
+2021,IL,Israel,4.812,7.649,60.272,,0.0,0.0
+2022,IL,Israel,3.695,6.719,62.346,Israel,950.0,21.0
+2023,IL,Israel,3.371,5.873,62.862,Israel,1067.0,18.0
+2024,IL,Israel,3.595,6.163,63.14,Israel,2217.0,19.0
+2025,IL,Israel,3.489,6.032,63.204,Israel,2120.0,15.0
+2020,IN,India,7.859,24.666,47.496,India,10461.0,27.0
+2021,IN,India,6.38,20.824,49.171,India,2280.0,4.0
+2022,IN,India,4.822,17.732,51.003,India,6848.0,41.0
+2023,IN,India,4.172,15.595,52.415,India,9001.0,78.0
+2024,IN,India,4.173,15.746,53.317,India,2759.0,23.0
+2025,IN,India,4.219,16.022,53.31,India,2575.0,19.0
+2020,JP,Japan,2.809,4.679,60.207,,0.0,0.0
+2021,JP,Japan,2.808,4.707,60.31,,0.0,0.0
+2022,JP,Japan,2.614,4.434,60.868,,0.0,0.0
+2023,JP,Japan,2.6,4.116,61.265,Japan,85.0,1.0
+2024,JP,Japan,2.5,3.93,61.717,Japan,4000.0,2.0
+2025,JP,Japan,2.451,3.898,61.893,Japan,0.0,1.0
+2020,KR,South Korea,3.931,10.143,59.826,,0.0,0.0
+2021,KR,South Korea,3.639,8.055,60.274,,0.0,0.0
+2022,KR,South Korea,2.857,6.638,61.971,,0.0,0.0
+2023,KR,South Korea,2.675,5.405,62.547,South Korea,395.0,2.0
+2024,KR,South Korea,2.784,6.434,62.67,,0.0,0.0
+2025,KR,South Korea,2.683,6.695,62.624,,0.0,0.0
+2020,MX,Mexico,4.44,8.053,53.921,Mexico,90.0,1.0
+2021,MX,Mexico,4.019,7.626,57.517,,0.0,0.0
+2022,MX,Mexico,3.256,6.465,58.961,Mexico,360.0,4.0
+2023,MX,Mexico,2.765,5.844,60.036,Mexico,0.0,3.0
+2024,MX,Mexico,2.678,5.76,59.985,,0.0,0.0
+2025,MX,Mexico,2.673,5.714,59.962,,0.0,0.0
+2020,NG,Nigeria,5.714,10.842,74.782,Nigeria,391.0,1.0
+2021,NG,Nigeria,5.404,8.991,75.812,,0.0,0.0
+2022,NG,Nigeria,3.827,6.024,78.158,Nigeria,997.0,6.0
+2023,NG,Nigeria,3.074,5.131,80.021,Nigeria,204.0,8.0
+2024,NG,Nigeria,3.045,5.088,80.053,Nigeria,128.0,5.0
+2025,NG,Nigeria,3.064,5.34,79.988,Nigeria,320.0,3.0
+2020,NL,Netherlands,3.82,8.879,64.002,Netherlands,4375.0,2.0
+2021,NL,Netherlands,4.209,9.335,63.733,,0.0,0.0
+2022,NL,Netherlands,3.526,7.647,64.858,Netherlands,4540.0,6.0
+2023,NL,Netherlands,3.535,8.272,65.327,Netherlands,8335.0,6.0
+2024,NL,Netherlands,3.7,8.778,64.966,,0.0,0.0
+2025,NL,Netherlands,3.874,8.833,64.643,Netherlands,750.0,2.0
+2020,SE,Sweden,8.291,23.891,58.834,,0.0,0.0
+2021,SE,Sweden,8.803,24.555,58.526,,0.0,0.0
+2022,SE,Sweden,7.417,21.597,59.77,Sweden,1597.0,10.0
+2023,SE,Sweden,7.611,21.941,59.989,Sweden,9595.0,7.0
+2024,SE,Sweden,8.4,24.336,59.298,Sweden,1920.0,5.0
+2025,SE,Sweden,8.694,24.312,58.979,Sweden,3000.0,3.0
+2020,SG,Singapore,4.1,10.558,65.895,Singapore,2219.0,6.0
+2021,SG,Singapore,4.64,9.499,67.406,Singapore,21.0,1.0
+2022,SG,Singapore,3.591,7.924,67.23,Singapore,285.0,9.0
+2023,SG,Singapore,3.444,8.515,67.004,Singapore,1079.0,9.0
+2024,SG,Singapore,2.737,6.329,67.308,Singapore,312.0,5.0
+2025,SG,Singapore,2.818,6.781,67.709,,0.0,0.0
+2020,US,United States,8.055,14.891,56.598,United States,29528.0,273.0
+2021,US,United States,5.349,9.704,58.211,United States,3571.0,17.0
+2022,US,United States,3.65,8.105,59.538,United States,53396.0,403.0
+2023,US,United States,3.638,7.953,59.821,United States,108290.0,476.0
+2024,US,United States,4.022,8.92,59.467,United States,54283.0,216.0
+2025,US,United States,4.198,9.34,59.114,United States,68080.0,108.0
+2020,ZA,South Africa,29.217,59.607,35.779,South Africa,0.0,1.0
+2021,ZA,South Africa,34.007,65.451,34.332,,0.0,0.0
+2022,ZA,South Africa,33.268,61.676,35.701,,0.0,0.0
+2023,ZA,South Africa,32.098,60.259,37.359,,0.0,0.0
+2024,ZA,South Africa,32.279,60.248,37.632,,0.0,0.0
+2025,ZA,South Africa,32.391,59.93,37.58,,0.0,0.0

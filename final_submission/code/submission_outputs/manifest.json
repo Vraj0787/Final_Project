@@ -6,7 +6,7 @@
     "us_labor_indicators.csv",
     "global_labor_indicators.csv"
   ],
-  "outputs_root": "outputs",
+  "outputs_root": "submission_outputs",
   "figures_dir": "figures",
   "tables_dir": "tables",
   "cleaned_data_dir": "cleaned_data",

@@ -7,7 +7,7 @@ This document summarizes the statistical methods implemented in `final_project_a
 - Converted `pct_workforce` from percentage strings into numeric percentages.
 - Converted `raised_mm` from currency-formatted strings into numeric millions of USD.
 - Standardized truncated country and industry names where needed.
-- Exported cleaned versions of every dataset to `final_submission/outputs/cleaned_data/`.
+- Exported cleaned versions of every dataset to `submission_outputs/cleaned_data/`.
 
 ## Descriptive Analysis
 - Overall dataset summaries.
